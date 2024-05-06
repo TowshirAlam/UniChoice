@@ -19,4 +19,8 @@
         android:id="@+id/profileFragment"
         android:name="com.example.unichoice.Fragment.ProfileFragment"
         android:label="ProfileFragment" />
+    <fragment
+        android:id="@+id/uploadProfilePicFragment"
+        android:name="com.example.unichoice.Fragment.UploadProfilePicFragment"
+        android:label="UploadProfilePicFragment" />
 </navigation>

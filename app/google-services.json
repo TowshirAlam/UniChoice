@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "624349127048",
+    "project_id": "unichoice-b9781",
+    "storage_bucket": "unichoice-b9781.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:624349127048:android:68e51f7484e1be73cd1a3d",
+        "android_client_info": {
+          "package_name": "com.example.unichoice"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9LfSR2sRBTNC4cuX_bGfwliPPaDVw_94"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

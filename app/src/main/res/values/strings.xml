@@ -3,4 +3,15 @@
     <string name="password">Password</string>
     <string name="email_or_phone_number">Email or Phone Number</string>
     <string name="or">Or</string>
+    <string name="user_display_picture">user_display_picture</string>
+    <string name="loading">loading</string>
+    <string name="dob">dob</string>
+    <string name="gender">gender</string>
+    <string name="mobile">mobile</string>
+    <string name="registered_user_since">registered_user_since</string>
+    <string name="email">email</string>
+    <string name="name">name</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="label">A COLLEGE SELECTOR</string>
 </resources>
