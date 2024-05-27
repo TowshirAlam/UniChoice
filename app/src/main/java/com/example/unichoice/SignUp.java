@@ -1,8 +1,6 @@
 package com.example.unichoice;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,10 +8,16 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,12 +31,18 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Calendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class SignUp extends AppCompatActivity {
-    private EditText fullname, email, password, moblie;
+    private EditText fullname, email, password, moblie, DoB;
+    private RadioGroup radidoGroupRegisterGender;
+    private RadioButton radioButtonRegisterGenderSelected;
 
     private ProgressBar progressBar;
     private Button register;
-    private TextView alreadyhavebtn;
+    private DatePickerDialog picker;
     private static final String TAG = "SignUp";
 
     @Override
@@ -43,18 +53,50 @@ public class SignUp extends AppCompatActivity {
         fullname = findViewById(R.id.edittext_fulname);
         email = findViewById(R.id.edittext_email);
         password = findViewById(R.id.edittext_password);
+        DoB = findViewById(R.id.dob);
+        moblie = findViewById(R.id.edittext_phone);
         progressBar = findViewById(R.id.progress_Bar);
 
-        register = findViewById(R.id.signupbtn);
-        alreadyhavebtn = findViewById(R.id.alreadyhavebtn);
+        radidoGroupRegisterGender = findViewById(R.id.radio_gender);
+        radidoGroupRegisterGender.clearCheck();
 
+        //Setting up DatePicker on EditText
+        DoB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar calendar = Calendar.getInstance();
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                int month = calendar.get(Calendar.MONTH);
+                int year = calendar.get(Calendar.YEAR);
+                //Date Picker Dialog
+                picker = new DatePickerDialog(SignUp.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        DoB.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
+                    }
+                }, year, month, day);
+                picker.show();
+            }
+        });
+
+        register = findViewById(R.id.signupbtn);
+        TextView alreadyhavebtn = findViewById(R.id.alreadyhavebtn);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Obtaining the entered data
                 String textFullName = fullname.getText().toString();
                 String textEmail = email.getText().toString();
+                String textDoB = DoB.getText().toString();
+                String textMobile = moblie.getText().toString();
                 String textPwd = password.getText().toString();
+                String textGender;  //Can't obtain the value before verifying if ant button was selected or not.
+
+                //Validate moblie no. using Matcher and Pattern (Regular Expression);
+                String moblieRegex = "[6-9][0-9]{9}";  //First no. can be {6,7,8,9} and rest 9 numbers can be any.
+                Matcher mobileMatcher;
+                Pattern mobilePattern = Pattern.compile(moblieRegex);
+                mobileMatcher = mobilePattern.matcher(textMobile);
 
                 if (TextUtils.isEmpty(textFullName)) {
                     Toast.makeText(SignUp.this, "Please Enter your Full Name", Toast.LENGTH_SHORT).show();
@@ -68,7 +110,27 @@ public class SignUp extends AppCompatActivity {
                     Toast.makeText(SignUp.this, "Please Enter your email", Toast.LENGTH_SHORT).show();
                     email.setError("Valid Email is required");
                     email.requestFocus();
-                }else if (TextUtils.isEmpty(textPwd)) {
+                } else if (TextUtils.isEmpty(textDoB)) {
+                    Toast.makeText(SignUp.this, "Please Enter your Date of Birth", Toast.LENGTH_SHORT).show();
+                    DoB.setError("Date of Birth is required");
+                    DoB.requestFocus();
+                } else if (radidoGroupRegisterGender.getCheckedRadioButtonId() == -1) {
+                    Toast.makeText(SignUp.this, "Please Select your Gender", Toast.LENGTH_SHORT).show();
+                    radioButtonRegisterGenderSelected.setError("Gender is Required");
+                    radioButtonRegisterGenderSelected.requestFocus();
+                } else if (TextUtils.isEmpty(textMobile)) {
+                    Toast.makeText(SignUp.this, "Please Enter your Moblie no.", Toast.LENGTH_SHORT).show();
+                    moblie.setError("Mobile no. is required");
+                    moblie.requestFocus();
+                } else if (textMobile.length() != 10) {
+                    Toast.makeText(SignUp.this, "Please Enter your Moblie no.", Toast.LENGTH_SHORT).show();
+                    moblie.setError("Valid Mobile no. is required");
+                    moblie.requestFocus();
+                } else if (!mobileMatcher.find()) {
+                    Toast.makeText(SignUp.this, "Please Enter your Moblie no.", Toast.LENGTH_SHORT).show();
+                    moblie.setError("Mobile no. is not Valid");
+                    moblie.requestFocus();
+                } else if (TextUtils.isEmpty(textPwd)) {
                     Toast.makeText(SignUp.this, "Please Enter your Password", Toast.LENGTH_SHORT).show();
                     password.setError("Password is required");
                     password.requestFocus();
@@ -77,23 +139,22 @@ public class SignUp extends AppCompatActivity {
                     password.setError("Password too weak");
                     password.requestFocus();
                 } else {
+//                    textGender = radioButtonRegisterGenderSelected.getText().toString();
+                    textGender="Male";
                     progressBar.setVisibility(View.VISIBLE);
-                    registerUser(textFullName, textEmail, textPwd);
+                    registerUser(textFullName, textEmail, textDoB, textGender, textMobile, textPwd);
                 }
             }
         });
 
-        alreadyhavebtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(SignUp.this, Login.class);
-                startActivity(intent);
-            }
+        alreadyhavebtn.setOnClickListener(view -> {
+            Intent intent = new Intent(SignUp.this, Login.class);
+            startActivity(intent);
         });
     }
 
     //Register user using Credentials
-    private void registerUser(String textFullName, String textEmail, String textPwd) {
+    private void registerUser(String textFullName, String textEmail, String textDoB, String textGender, String textMobile, String textPwd) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         auth.createUserWithEmailAndPassword(textEmail, textPwd).addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -106,7 +167,7 @@ public class SignUp extends AppCompatActivity {
                     firebaseUser.updateProfile(profileChangeRequest);
 
                     //Fetching the user data to FireBase Realtime DataBase
-                    ReadWriteUserDetails writeUserDetails = new ReadWriteUserDetails(textFullName,textEmail);
+                    ReadWriteUserDetails writeUserDetails = new ReadWriteUserDetails(textDoB, textGender, textMobile);
 
                     // Extracting User reference from Database for "Registered User"
                     DatabaseReference referenceProfile = FirebaseDatabase.getInstance().getReference("Registered Users");
@@ -127,6 +188,7 @@ public class SignUp extends AppCompatActivity {
                                 finish(); //To close register Activity
                             } else {
                                 Toast.makeText(SignUp.this, "Not Registered", Toast.LENGTH_LONG).show();
+
                             }
                             //Hide Progress Bar weather User is creation is successful or failed
                             progressBar.setVisibility(View.GONE);

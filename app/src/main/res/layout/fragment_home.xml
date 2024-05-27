@@ -38,29 +38,13 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/yeon_sung"
-        android:text="Popular"
-        android:textSize="16sp"
+        android:text="College List"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
-    <TextView
-        android:id="@+id/textView14"
-        android:layout_width="80dp"
-        android:layout_height="25dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/textviewshape"
-        android:elevation="5dp"
-        android:fontFamily="@font/lato"
-        android:gravity="center"
-        android:text="View Menu"
-        android:textColor="@color/textcolor"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView12"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView12" />
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/popularRecyclerView"
+        android:id="@+id/collegelistRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="5dp"

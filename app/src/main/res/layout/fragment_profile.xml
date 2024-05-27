@@ -29,7 +29,6 @@
                     android:id="@+id/my_app_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/endcolor"
                     android:minHeight="?attr/actionBarSize"
                     android:theme="?attr/actionBarTheme" />
 
@@ -52,7 +51,7 @@
                             android:layout_width="160dp"
                             android:layout_height="160dp"
                             android:contentDescription="@string/user_display_picture"
-                            android:background="@drawable/no_profile_pic"
+                            android:background="@drawable/ic_profile"
                             android:scaleType="centerCrop" />
                     </androidx.cardview.widget.CardView>
 
@@ -115,7 +114,7 @@
                         android:layout_centerVertical="true"
                         android:layout_alignStart="@id/ic_profile"
                         android:layout_marginStart="50dp"
-                        android:hint="@string/loading" />
+                        android:hint="@string/loading"/>
                 </RelativeLayout>
 
                 <View
@@ -148,9 +147,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignStart="@id/ic_email"
                         android:layout_marginStart="50dp"
+                        android:hint="@string/loading"
                         android:layout_centerVertical="true"
-                        android:layout_marginTop="20dp"
-                        android:hint="@string/loading" />
+                        android:layout_marginTop="20dp" />
                 </RelativeLayout>
 
                 <View
@@ -185,7 +184,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginStart="50dp"
                         android:layout_marginTop="20dp"
-                        android:hint="@string/loading" />
+                        android:hint="@string/loading"/>
                 </RelativeLayout>
 
                 <View
@@ -218,9 +217,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignStart="@id/ic_gender"
                         android:layout_centerVertical="true"
+                        android:hint="@string/loading"
                         android:layout_marginStart="50dp"
-                        android:layout_marginTop="20dp"
-                        android:hint="@string/loading" />
+                        android:layout_marginTop="20dp" />
                 </RelativeLayout>
 
                 <View
@@ -251,10 +250,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:hint="@string/loading"
                         android:layout_alignStart="@id/ic_mobile"
                         android:layout_marginStart="50dp"
-                        android:layout_marginTop="20dp"
-                        android:hint="@string/loading" />
+                        android:layout_marginTop="20dp" />
                 </RelativeLayout>
 
                 <ProgressBar
@@ -268,18 +267,18 @@
                     android:visibility="gone" />
             </RelativeLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:layout_marginTop="50dp"
-                android:text="@string/registered_user_since"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:hint="@string/loading"
-                android:id="@+id/textView_show_register_date"/>
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textAlignment="center"-->
+<!--                android:layout_marginTop="50dp"-->
+<!--                android:text="@string/registered_user_since"/>-->
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textAlignment="center"-->
+<!--                android:hint="@string/loading"-->
+<!--                android:id="@+id/textView_show_register_date"/>-->
 
         </LinearLayout>
     </ScrollView>

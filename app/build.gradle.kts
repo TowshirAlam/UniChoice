@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId = "com.example.unichoice"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -47,9 +47,19 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment:2.7.7")
     implementation("androidx.navigation:navigation-ui:2.7.7")
     implementation("androidx.mediarouter:mediarouter:1.7.0")
+    implementation("com.google.firebase:firebase-storage:21.0.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
-    implementation ("com.github.denzcoskun:ImageSlideshow:0.1.2")
+    implementation("com.github.denzcoskun:ImageSlideshow:0.1.2")
+
+    implementation("com.squareup.picasso:picasso:2.71828")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+
+    implementation("com.github.barteksc:android-pdf-viewer:2.8.2")
+    implementation("com.github.barteksc:pdfium-android:1.9.0")
+
+
+    implementation ("com.github.yalantis:ucrop:2.2.8")
 }

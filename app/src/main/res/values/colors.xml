@@ -6,6 +6,9 @@
     <color name="startcolor">#53E88B</color>
     <color name="endcolor">#15BE77</color>
 
+    <color name="lavender">#8692f7</color>
+
+
     <color name="light_gray">#9E9C9C</color>
     <color name="purple_700">#7B1FA2</color>
 </resources>

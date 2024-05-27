@@ -100,19 +100,23 @@ public class Login extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Getting instance of the current user.
-                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
+//                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
 
-                            //Check if email is verified before user can access their profile
-                            if (firebaseUser.isEmailVerified()) {
-                                Toast.makeText(Login.this, "Your logged in now", Toast.LENGTH_SHORT).show();
-                                //Open user profile
-                                startActivity(new Intent(Login.this, MainActivity.class));
-                                finish(); // Close Login Activity
-                            } else {
-                                firebaseUser.isEmailVerified();
-                                mAuth.signOut();
-                                showAlertDialog();
-                            }
+                            //Open user profile
+                            startActivity(new Intent(Login.this, MainActivity.class));
+                            finish();
+
+//                            //Check if email is verified before user can access their profile
+//                            if (firebaseUser.isEmailVerified()) {
+//                                Toast.makeText(Login.this, "Your logged in now", Toast.LENGTH_SHORT).show();
+//                                //Open user profile
+//                                startActivity(new Intent(Login.this, MainActivity.class));
+//                                finish(); // Close Login Activity
+//                            } else {
+//                                firebaseUser.isEmailVerified();
+//                                mAuth.signOut();
+//                                showAlertDialog();
+//                            }
                         } else {
                             try {
                                 throw task.getException();
