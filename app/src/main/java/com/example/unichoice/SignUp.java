@@ -139,8 +139,10 @@ public class SignUp extends AppCompatActivity {
                     password.setError("Password too weak");
                     password.requestFocus();
                 } else {
-//                    textGender = radioButtonRegisterGenderSelected.getText().toString();
-                    textGender="Male";
+                   int  selectedGenderId=radidoGroupRegisterGender.getCheckedRadioButtonId();
+                    radioButtonRegisterGenderSelected = findViewById(selectedGenderId);
+                    textGender = radioButtonRegisterGenderSelected.getText().toString();
+
                     progressBar.setVisibility(View.VISIBLE);
                     registerUser(textFullName, textEmail, textDoB, textGender, textMobile, textPwd);
                 }
@@ -167,7 +169,7 @@ public class SignUp extends AppCompatActivity {
                     firebaseUser.updateProfile(profileChangeRequest);
 
                     //Fetching the user data to FireBase Realtime DataBase
-                    ReadWriteUserDetails writeUserDetails = new ReadWriteUserDetails(textDoB, textGender, textMobile);
+                    ReadWriteUserDetails writeUserDetails = new ReadWriteUserDetails(textFullName,textEmail,textDoB, textGender, textMobile);
 
                     // Extracting User reference from Database for "Registered User"
                     DatabaseReference referenceProfile = FirebaseDatabase.getInstance().getReference("Registered Users");

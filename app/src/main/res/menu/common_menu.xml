@@ -12,16 +12,22 @@
 
     <item
         android:id="@+id/menu_update_profile"
-        android:title="Update Profile" />
+        android:title="Update Profile Picture" />
 
 
     <item
-        android:id="@+id/menu_update_email"
-        android:title="Update Email" />
+        android:id="@+id/menu_update_mobile"
+        android:title="Update Mobile No." />
+    <item
+        android:id="@+id/menu_update_name"
+        android:title="Update Name" />
 
     <item
-        android:id="@+id/menu_settings"
-        android:title="Settings" />
+        android:id="@+id/menu_update_dob"
+        android:title="Update Date of Birth" />
+    <item
+        android:id="@+id/menu_update_gender"
+        android:title="Update Gender" />
 
     <item
         android:id="@+id/menu_change_password"

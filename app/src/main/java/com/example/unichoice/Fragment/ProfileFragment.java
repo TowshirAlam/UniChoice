@@ -1,14 +1,17 @@
 package com.example.unichoice.Fragment;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -29,6 +32,7 @@ import com.example.unichoice.ReadWriteUserDetails;
 import com.example.unichoice.databinding.FragmentProfileBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -208,12 +212,19 @@ public class ProfileFragment extends Fragment {
 
         if (id == R.id.menu_update_profile) {
             openImageChooser();
-        } else if (id == R.id.menu_update_email) {
-            Toast.makeText(getContext(), "Coming Soon", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.menu_settings) {
-            Toast.makeText(getContext(), "Coming Soon", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.menu_update_mobile) {
+            updateMobile();
+            Toast.makeText(getContext(), "Updated", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.menu_update_name) {
+            updateName();
+        } else if (id == R.id.menu_update_dob) {
+            updateDoB();
+            Toast.makeText(getContext(), "Updated", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.menu_update_gender) {
+            updateGender();
         } else if (id == R.id.menu_change_password) {
-            Toast.makeText(getContext(), "Coming Soon", Toast.LENGTH_SHORT).show();
+            updatePassword();
+            Toast.makeText(getContext(), "Updated", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.menu_delete_profile) {
             Toast.makeText(getContext(), "Coming Soon", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.menu_logout) {
@@ -227,5 +238,156 @@ public class ProfileFragment extends Fragment {
             Toast.makeText(getContext(), "Something went wrong. Profile", Toast.LENGTH_LONG).show();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+//    private void updateEmail() {
+//        final EditText editText = new EditText(getContext());
+//        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+//        dialog.setTitle("Update Email")
+//                .setMessage("Enter new email")
+//                .setView(editText)
+//                .setPositiveButton("Update", (dialogInterface, i) -> {
+//                    String newEmail = editText.getText().toString().trim();
+//                    FirebaseUser user = authProfile.getCurrentUser();
+//                    if (user != null) {
+//                        user.updateEmail(newEmail).addOnCompleteListener(task -> {
+//                            if (task.isSuccessful()) {
+//                                Toast.makeText(getContext(), "Email updated", Toast.LENGTH_SHORT).show();
+//                                textViewEmail.setText(newEmail);
+//                            } else {
+//                                Toast.makeText(getContext(), "Email update failed", Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
+//                    }
+//                })
+//                .setNegativeButton("Cancel", null)
+//                .create().show();
+//    }
+
+    private void updateName() {
+        final EditText editText = new EditText(getContext());
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        dialog.setTitle("Update Name")
+                .setMessage("Enter new name")
+                .setView(editText)
+                .setPositiveButton("Update", (dialogInterface, i) -> {
+                    String newName = editText.getText().toString().trim();
+                    FirebaseUser user = authProfile.getCurrentUser();
+                    if (user != null) {
+                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(newName)
+                                .build();
+                        user.updateProfile(profileUpdates).addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getContext(), "Name updated", Toast.LENGTH_SHORT).show();
+                                textViewFullName.setText(newName);
+                                textViewWelcome.setText("Welcome, " + newName + "!");
+                            } else {
+                                Toast.makeText(getContext(), "Name update failed", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .create().show();
+    }
+
+    private void updateGender() {
+        final EditText editText = new EditText(getContext());
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        dialog.setTitle("Update Gender")
+                .setMessage("Enter new gender")
+                .setView(editText)
+                .setPositiveButton("Update", (dialogInterface, i) -> {
+                    String newGender = editText.getText().toString().trim();
+                    FirebaseUser user = authProfile.getCurrentUser();
+                    String userID = user.getUid();
+                    DatabaseReference referenceProfile = FirebaseDatabase.getInstance().getReference("Registered Users");
+                    referenceProfile.child(userID).child("gender").setValue(newGender).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getContext(), "Gender updated", Toast.LENGTH_SHORT).show();
+                            textViewGender.setText(newGender);
+                        } else {
+                            Toast.makeText(getContext(), "Gender update failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                })
+                .setNegativeButton("Cancel", null)
+                .create().show();
+    }
+
+    private void updateDoB() {
+        final EditText editText = new EditText(getContext());
+        editText.setInputType(InputType.TYPE_CLASS_DATETIME | InputType.TYPE_DATETIME_VARIATION_DATE);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        dialog.setTitle("Update Date of Birth")
+                .setMessage("Enter new date of birth (dd/MM/yyyy)")
+                .setView(editText)
+                .setPositiveButton("Update", (dialogInterface, i) -> {
+                    String newDoB = editText.getText().toString().trim();
+                    FirebaseUser user = authProfile.getCurrentUser();
+                    String userID = user.getUid();
+                    DatabaseReference referenceProfile = FirebaseDatabase.getInstance().getReference("Registered Users");
+                    referenceProfile.child(userID).child("doB").setValue(newDoB).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getContext(), "Date of Birth updated", Toast.LENGTH_SHORT).show();
+                            textViewDoB.setText(newDoB);
+                        } else {
+                            Toast.makeText(getContext(), "Date of Birth update failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                })
+                .setNegativeButton("Cancel", null)
+                .create().show();
+    }
+
+    private void updateMobile() {
+        final EditText editText = new EditText(getContext());
+        editText.setInputType(InputType.TYPE_CLASS_PHONE);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        dialog.setTitle("Update Mobile Number")
+                .setMessage("Enter new mobile number")
+                .setView(editText)
+                .setPositiveButton("Update", (dialogInterface, i) -> {
+                    String newMobile = editText.getText().toString().trim();
+                    FirebaseUser user = authProfile.getCurrentUser();
+                    String userID = user.getUid();
+                    DatabaseReference referenceProfile = FirebaseDatabase.getInstance().getReference("Registered Users");
+                    referenceProfile.child(userID).child("mobile").setValue(newMobile).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getContext(), "Mobile Number updated", Toast.LENGTH_SHORT).show();
+                            textViewMobile.setText(newMobile);
+                        } else {
+                            Toast.makeText(getContext(), "Mobile Number update failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                })
+                .setNegativeButton("Cancel", null)
+                .create().show();
+    }
+
+    private void updatePassword() {
+        final EditText editText = new EditText(getContext());
+        editText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        dialog.setTitle("Update Password")
+                .setMessage("Enter new password")
+                .setView(editText)
+                .setPositiveButton("Update", (dialogInterface, i) -> {
+                    String newPassword = editText.getText().toString().trim();
+                    FirebaseUser user = authProfile.getCurrentUser();
+                    if (user != null) {
+                        user.updatePassword(newPassword).addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getContext(), "Password updated", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getContext(), "Password update failed", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .create().show();
     }
 }
